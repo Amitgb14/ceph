@@ -918,6 +918,9 @@ bool PG::needs_backfill() const
 
 void PG::check_past_interval_bounds() const
 {
+  if (cct->_conf.get_val<bool>("osd_skip_check_past_interval_bounds")) {
+    return
+  }
   auto oldest_epoch = osd->get_superblock().oldest_map;
   auto rpib = get_required_past_interval_bounds(
     info,
